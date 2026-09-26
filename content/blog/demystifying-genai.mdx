@@ -1,0 +1,34 @@
+---
+title: "Demystifying Generative AI: From Transformers to Production"
+date: "2026-01-20"
+excerpt: "A deep dive into self-attention, embeddings, and the engineering challenges of shipping AI."
+---
+
+Generative AI has shifted from a research curiosity to a core component of modern software architecture. But beyond the hype of chatbots, there lies a sophisticated landscape of probabilistic modeling and high-scale engineering.
+
+## The Transformer Revolution
+
+At the heart of modern GenAI is the **Transformer** architecture. Unlike previous sequential models like RNNs, Transformers use "Attention" mechanisms to process data in parallel, allowing them to capture long-range dependencies in text.
+
+Understanding the *Self-Attention* mechanism is key: it allows the model to weigh the importance of different words in a sentence relative to each other. When a model sees the word "bank," attention helps it decide if it's referring to a river or a financial institution based on the surrounding context.
+
+## Beyond the Prompt: Embeddings and Vector Space
+
+To work with GenAI effectively, we must understand how models "see" data. Text is converted into **Embeddings**—high-dimensional vectors that represent semantic meaning.
+
+In this vector space, "King" and "Queen" are mathematically closer to each other than "King" and "Apple." This mathematical representation is what enables **Semantic Search** and **Retrieval-Augmented Generation (RAG)**. Instead of searching for keywords, we search for *meaning*.
+
+## The Production Gap
+
+Building a demo is easy; shipping a production-grade AI application is hard. The challenges include:
+
+1.  **Hallucinations**: Models are designed to be creative, which can lead to confident but false statements.
+2.  **Latency**: Large models are computationally expensive. Optimizing inference time is critical for user experience.
+3.  **Cost Management**: Token-based pricing can scale quickly. Efficient prompt engineering and caching are essential.
+4.  **Evaluations**: Unlike traditional software, AI output is non-deterministic. We need robust "LLM-as-a-judge" or heuristic-based eval pipelines.
+
+## The Future: Small Language Models (SLMs)
+
+While GPT-4 and Claude 3.5 dominate, we are seeing a rise in high-performance **Small Language Models**. Models like Llama-3-8B or Phi-3 can often match the performance of giants on specific tasks while being small enough to run on edge devices or private servers.
+
+This shift towards smaller, specialized models will define the next era of private, secure, and fast AI applications.

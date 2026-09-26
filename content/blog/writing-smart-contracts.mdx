@@ -1,0 +1,85 @@
+---
+title: "Writing Smart Contracts: Code That Lives on the Blockchain"
+date: "2026-06-20"
+excerpt: "What changes when your code is immutable, public, and runs without a server. A practical look at Solidity, gas, and security."
+---
+
+Most developers write code that runs on servers they control. Smart contracts are different. Once deployed, the code is immutable, public, and executes exactly as written, every time, with no intermediary.
+
+## What Is a Smart Contract?
+
+A smart contract is a program deployed to a blockchain (typically Ethereum or an EVM-compatible chain). It holds state, exposes functions, and enforces rules without any central authority running it.
+
+The canonical language is **Solidity**, which compiles down to EVM bytecode. Think of it like writing a tiny backend where the "database" is the chain itself and every state change costs gas.
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+contract SimpleStorage {
+    uint256 private value;
+
+    event ValueChanged(address indexed by, uint256 newValue);
+
+    function set(uint256 _value) external {
+        value = _value;
+        emit ValueChanged(msg.sender, _value);
+    }
+
+    function get() external view returns (uint256) {
+        return value;
+    }
+}
+```
+
+## The Mental Shift
+
+Coming from traditional development, a few things hit differently:
+
+**Everything is public.** Contract storage isn't private even if marked `private`. It's just not exposed via ABI. Anyone can read raw storage slots.
+
+**Reverts are your friend.** Instead of returning error codes, you `require()` or `revert()`. The entire transaction rolls back on failure, preserving state integrity.
+
+**Gas is a first-class concern.** Tight loops over unbounded arrays, unnecessary storage reads, redundant state: all of these burn user funds. Writing gas-efficient code isn't optional.
+
+## Storage vs Memory vs Calldata
+
+One of the most important Solidity concepts:
+
+| Location | Persists? | Cost | Use For |
+|----------|-----------|------|---------|
+| `storage` | Yes | High | State variables |
+| `memory` | No | Low | Temp variables in functions |
+| `calldata` | No | Lowest | Read-only function args |
+
+Choosing wrong costs real money on mainnet.
+
+## Testing and Tooling
+
+The modern Web3 dev stack:
+
+- **Hardhat / Foundry**: local development environments with fast test runners
+- **OpenZeppelin**: battle-tested contract libraries (ERC-20, ERC-721, access control)
+- **Ethers.js / viem**: frontend interaction with deployed contracts
+- **Tenderly / Hardhat traces**: step-through debugging for failed transactions
+
+Foundry's `forge test` is particularly sharp. Pure Solidity tests with fuzzing out of the box.
+
+## Security Is Non-Negotiable
+
+Smart contracts are adversarial environments. Common attack vectors:
+
+- **Reentrancy**: external call before state update lets attacker re-enter and drain funds (the DAO hack, 2016)
+- **Integer overflow**: pre-0.8.0 Solidity had no checked arithmetic; use 0.8+ or SafeMath
+- **Access control flaws**: missing `onlyOwner` checks on sensitive functions
+- **Front-running**: MEV bots watching the mempool and inserting transactions ahead of yours
+
+The pattern is: always update state before making external calls (checks-effects-interactions).
+
+## Deploying to the Real World
+
+Local to testnet (Sepolia, Mumbai) to mainnet. The flow is unforgiving. No rollback, no hotfix push, no support ticket. Audit before you deploy anything holding real value.
+
+## Conclusion
+
+Writing smart contracts forces you to think about code differently: immutability, adversarial users, gas costs, and the absence of a safety net. It's one of the most demanding environments to ship in, and one of the most interesting.

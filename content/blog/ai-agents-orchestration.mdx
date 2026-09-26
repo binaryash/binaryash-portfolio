@@ -1,0 +1,46 @@
+---
+title: "Orchestrating Intelligence: The Rise of AI Agents"
+date: "2026-02-05"
+excerpt: "Exploring multi-agent systems, tool-use patterns, and the Model Context Protocol (MCP)."
+---
+
+The first wave of AI apps were "chat-and-retrieve." The next wave is **Agentic**. An AI Agent isn't just a text generator; it's a reasoning engine capable of using tools, planning steps, and executing tasks autonomously.
+
+## What Makes an Agent?
+
+An agent typically consists of four core components:
+
+1.  **Brain (LLM)**: The central reasoning unit.
+2.  **Planning**: Breaking down complex goals into smaller, executable steps.
+3.  **Memory**: Both short-term (context window) and long-term (vector databases).
+4.  **Tools**: APIs, code executors, or search engines that the agent can call.
+
+## Agent Orchestration Patterns
+
+Building a single agent is useful, but real power comes from **Orchestration**—managing multiple agents working together.
+
+### 1. Sequential Chains
+The simplest form where Agent A's output becomes Agent B's input. Great for structured pipelines like "Summarize -> Translate -> Format."
+
+### 2. Router Patterns
+A "Supervisor" agent analyzes the request and routes it to the specialized agent best suited for the task (e.g., routing a math question to a Python-executor agent and a legal question to a RAG agent).
+
+### 3. Multi-Agent Collaboration
+Agents work in a loop, critiquing and improving each other's work. A common pattern is **Coder-Reviewer**: one agent writes the code, another reviews it for bugs, and they iterate until the tests pass.
+
+## The Model Context Protocol (MCP)
+
+Orchestration is often hindered by fragmented tool access. This is where the **Model Context Protocol (MCP)** comes in. It provides a standardized way for AI agents to connect to external data sources and tools, regardless of the underlying LLM.
+
+By using MCP, we can build "plug-and-play" tools that any agent can use, significantly reducing the glue code required to build complex agentic systems.
+
+## Challenges in Autonomy
+
+As agents gain more autonomy, we face new challenges:
+- **Infinite Loops**: Agents getting stuck in a reasoning loop without a clear exit condition.
+- **Tool Safety**: Ensuring an agent doesn't delete a database or leak secrets when given API access.
+- **Traceability**: Understanding *why* an agent made a specific decision.
+
+## Conclusion
+
+We are moving away from AI as a tool we use, toward AI as a collaborator that performs work for us. Mastering agent orchestration and standardized protocols like MCP will be the most valuable skill for the next generation of AI engineers.

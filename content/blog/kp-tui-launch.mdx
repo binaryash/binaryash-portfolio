@@ -1,0 +1,41 @@
+---
+title: "Building KP: A Lightning-Fast TUI for KeePassXC"
+date: "2026-02-09"
+excerpt: "Why I built a terminal-based wrapper for KeePassXC and how it speeds up my workflow."
+---
+
+If you're like me, you probably spend most of your time in the terminal. While KeePassXC is a fantastic password manager, switching to a GUI every time I need a credential felt like a break in my workflow. 
+
+I wanted something that felt as fast as fzf and as lightweight as a shell script. That's why I built KP.
+
+## The Philosophy
+
+KP isn't a new password manager; it's a TUI wrapper around the robust keepassxc-cli. It follows the "Unix philosophy": do one thing and do it well. 
+
+The goal was simple:
+1. Speed: Instant fuzzy searching.
+2. Efficiency: Copy passwords/usernames without navigating menus.
+3. Security: Don't store passwords on disk; use the official CLI for all heavy lifting.
+
+## Technical Implementation
+
+The core of KP is a Bash script that leverages fzf for the user interface. 
+
+### Fuzzy-Finding with Context
+The script loads all entries from your database into memory once (after a secure password prompt) and pipes them into fzf. This makes searching through thousands of entries instantaneous.
+
+### Lazy-Style Bindings
+One of my favorite features in modern editors like Neovim is "lazy-style" keybindings. In KP, you don't have to select an entry and then choose "Copy Password." You just hit Ctrl+P while highlighted on the entry, and it's in your clipboard.
+
+### Clipboard Abstraction
+To make it cross-platform, the script auto-detects your environment (Wayland, X11, or macOS) and chooses the appropriate clipboard tool (wl-copy, xclip, or pbcopy).
+
+## Why Bash?
+
+I could have written this in Go or Rust, but Bash was the right tool for the job. It's pre-installed on almost every Linux/macOS system, and it's perfect for "glueing" together existing CLI tools like keepassxc-cli and fzf.
+
+## Check it Out
+
+KP is open source and available on GitHub. If you're looking to speed up your security workflow, give it a try!
+
+[View on GitHub](https://github.com/binaryash/kp)
